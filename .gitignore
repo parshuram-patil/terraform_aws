@@ -10,3 +10,6 @@
 
 # IDE's
 .idea/
+
+# shell files
+*.tf*~
