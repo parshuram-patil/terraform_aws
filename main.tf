@@ -17,5 +17,5 @@ variable "mylist" {
 
 variable "mylist1" {
 	type=list(string)
-	default=["psp"]
+
 }
