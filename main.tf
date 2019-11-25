@@ -15,3 +15,7 @@ variable "mylist" {
 	default=[1,2,3,4]
 }
 
+variable "mylist1" {
+	type=list(string)
+	default=["psp"]
+}
