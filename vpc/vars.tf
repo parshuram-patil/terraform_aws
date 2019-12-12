@@ -19,3 +19,11 @@ variable "AMIS" {
   }
 }
 
+variable "WIN_AMIS" {
+  type = map(string)
+  default = {
+    us-east-1 = "ami-08b11fc5bd2026dee"
+    eu-west-1 = "ami-00f8336af4b6b40bf"
+  }
+}
+
