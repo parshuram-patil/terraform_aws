@@ -9,6 +9,9 @@
 # .tfvars files
 *.tfvars
 
+# plan files
+*.out
+
 # IDE's
 .idea/
 
