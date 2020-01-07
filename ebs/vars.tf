@@ -1,4 +1,4 @@
-variable "AWS_REGION" {
+variable  "AWS_REGION" {
   default = "eu-west-1"
 }
 
@@ -17,4 +17,12 @@ variable "AMIS" {
     us-west-1 = "ami-0b2d8d1abb76a53d8"
     eu-west-1 = "ami-01f14919ba412de34"
   }
+}
+
+variable "OS_TYPE" {
+  default = "Windows"
+}
+
+variable "PROFILE" {
+  default = "sandbox"
 }
