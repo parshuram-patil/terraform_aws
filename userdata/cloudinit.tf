@@ -27,3 +27,21 @@ data "template_cloudinit_config" "cloudinit-example" {
     content      = data.template_file.shell-script.rendered
   }
 }
+
+data "template_file" "ps-script" {
+  template = <<EOF
+  <powershell>
+      ${file("scripts/drive.ps1")}
+  </powershell>
+EOF
+}
+
+data "template_cloudinit_config" "cloudinit-win" {
+  gzip          = false
+  base64_encode = false
+
+  part {
+    content_type = "text/x-shellscript"
+    content      = data.template_file.ps-script.rendered
+  }
+}

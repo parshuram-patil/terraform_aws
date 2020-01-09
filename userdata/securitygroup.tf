@@ -21,3 +21,27 @@ resource "aws_security_group" "allow-ssh" {
   }
 }
 
+resource "aws_security_group" "allow-rdp" {
+  vpc_id      = aws_vpc.main.id
+  name        = "allow-rdp"
+  description = "Security Group For ELVIS Simulation Server"
+
+  ingress {
+    from_port       = 3389
+    to_port         = 3389
+    protocol        = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "allow-rdp"
+  }
+}
+

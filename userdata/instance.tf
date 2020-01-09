@@ -13,6 +13,10 @@ resource "aws_instance" "example" {
 
   # user data
   user_data = data.template_cloudinit_config.cloudinit-example.rendered
+
+  tags = {
+    Name = "linux server"
+  }
 }
 
 resource "aws_ebs_volume" "ebs-volume-1" {
@@ -50,4 +54,60 @@ resource "aws_volume_attachment" "ebs-volume-2-attachment" {
 
 output "public_ip" {
   value = aws_instance.example.public_ip
+}
+
+resource "aws_instance" "win_server" {
+  ami           = "ami-0fd746a1b57abfb81"
+  instance_type = "t2.micro"
+
+  # the VPC subnet
+  subnet_id = aws_subnet.main-public-1.id
+
+  # the security group
+  vpc_security_group_ids = [aws_security_group.allow-rdp.id]
+
+  # the public SSH key
+  key_name = aws_key_pair.mykeypair.key_name
+
+  user_data = data.template_cloudinit_config.cloudinit-win.rendered
+
+  tags = {
+    Name = "win server"
+  }
+}
+
+resource "aws_ebs_volume" "ebs-volume-win-1" {
+  availability_zone = "eu-west-1a"
+  size              = 10
+  type              = "gp2"
+  tags = {
+    Name = "win server volume 1"
+  }
+}
+
+resource "aws_volume_attachment" "ebs-volume-attachment-win-1" {
+  device_name = var.EBS_DEVICE_NAME_1
+  volume_id   = aws_ebs_volume.ebs-volume-win-1.id
+  instance_id = aws_instance.win_server.id
+  skip_destroy = true
+}
+
+resource "aws_ebs_volume" "ebs-volume-win-2" {
+  availability_zone = "eu-west-1a"
+  size              = 20
+  type              = "gp2"
+  tags = {
+    Name = "win server volume 2"
+  }
+}
+
+resource "aws_volume_attachment" "ebs-volume-attachment-win-2" {
+  device_name = var.EBS_DEVICE_NAME_2
+  volume_id   = aws_ebs_volume.ebs-volume-win-2.id
+  instance_id = aws_instance.win_server.id
+  skip_destroy = true
+}
+
+output "windows_public_ip" {
+  value = aws_instance.win_server.public_ip
 }
