@@ -32,6 +32,7 @@ data "template_file" "ps-script" {
   template = <<EOF
   <powershell>
       ${file("scripts/drive.ps1")}
+      setup-volume "${replace(join(",", [var.EBS_DEVICE_NAME_1, var.EBS_DEVICE_NAME_2]), ",", " ")}"
   </powershell>
 EOF
 }

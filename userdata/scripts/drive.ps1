@@ -1,28 +1,46 @@
-$AVAILABLE_DISKS = (Get-Disk | ? { ($_.OperationalStatus -eq "Offline") -and ($_."PartitionStyle" -eq "RAW") }).Number
-foreach ($DISK in $AVAILABLE_DISKS) {
-  Write-Output "Mounting Disk $DISK"
+function setup-volume
+{
+    param(
+        [parameter(mandatory = $true)] [string] $devices
+    )
 
-  try {
-    Initialize-Disk -Number $DISK -PartitionStyle "MBR"
-  } catch {
-    Write-Output "Failed to initialize disk : $_"
-  }
+    $devices >> C:\test.txt
 
-  try {
-    $PARTITION = New-Partition -DiskNumber $DISK -UseMaximumSize -IsActive -AssignDriveLetter
-  } catch {
-    Write-Output "Failed to create partition : $_"
-  }
+    $AVAILABLE_DISKS = (Get-Disk | ? { ($_.OperationalStatus -eq "Offline") -and ($_."PartitionStyle" -eq "RAW") }).Number
+    foreach ($DISK in $AVAILABLE_DISKS)
+    {
+        Write-Output "Mounting Disk $DISK"
 
-  try {
-    Format-Volume -DriveLetter $PARTITION.DriveLetter -Confirm:$FALSE
-  } catch {
-    Write-Output "Failed to format drive $($PARTITION.DriveLetter) : $_"
-  }
+        try
+        {
+            Initialize-Disk -Number $DISK -PartitionStyle "MBR"
+        }
+        catch
+        {
+            Write-Output "Failed to initialize disk : $_"
+        }
 
-  Write-Output "Disk $DISK mounted as Drive $($PARTITION.DriveLetter)"
+        try
+        {
+            $PARTITION = New-Partition -DiskNumber $DISK -UseMaximumSize -IsActive -AssignDriveLetter
+        }
+        catch
+        {
+            Write-Output "Failed to create partition : $_"
+        }
+
+        try
+        {
+            Format-Volume -DriveLetter $PARTITION.DriveLetter -Confirm:$FALSE
+        }
+        catch
+        {
+            Write-Output "Failed to format drive $( $PARTITION.DriveLetter ) : $_"
+        }
+
+        Write-Output "Disk $DISK mounted as Drive $( $PARTITION.DriveLetter )"
+    }
 }
-
 
 <#
 function setup-volume {
