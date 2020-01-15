@@ -35,3 +35,9 @@ variable "EBS_DEVICE_NAME_2" {
   default = "/dev/xvdi"
 }
 
+variable "tag" {
+  default = {
+    Name       = "Variable Tag"
+    "app:name" = "User data"
+  }
+}

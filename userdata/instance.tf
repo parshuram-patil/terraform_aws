@@ -17,6 +17,9 @@ resource "aws_instance" "example" {
   tags = {
     Name = "linux server"
   }
+
+  volume_tags = var.tag
+
 }
 
 resource "aws_ebs_volume" "ebs-volume-1" {
@@ -74,6 +77,8 @@ resource "aws_instance" "win_server" {
   tags = {
     Name = "win server"
   }
+
+  volume_tags = var.tag
 }
 
 resource "aws_ebs_volume" "ebs-volume-win-1" {
