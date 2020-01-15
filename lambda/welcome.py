@@ -1,2 +1,7 @@
 def hello(event, context):
-    print("Welcome to Python Function V2")
+    message = "Welcome to Python Function"
+    print(message)
+
+    return {
+        'message' :  message
+    }
