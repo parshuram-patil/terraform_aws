@@ -1,5 +1,5 @@
 def hello(event, context):
-    message = "Welcome First to Python Function"
+    message = "Welcome to First Python Function"
     print(message)
 
     # Body and Status Code is mandatory if you are using lambda with API gateway
