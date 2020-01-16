@@ -131,3 +131,39 @@ output "first_nested_deployment" {
   value = aws_api_gateway_deployment.first_nested_deployment.invoke_url
 }
 #------------------------------------------------------------------------------------------
+
+
+#------------------------------- HTTP Proxy --------------------------------------------
+
+resource "aws_api_gateway_resource" "http" {
+  rest_api_id = aws_api_gateway_rest_api.example.id
+  parent_id   = aws_api_gateway_resource.first.id
+  path_part   = "http"
+}
+
+resource "aws_api_gateway_method" "http" {
+  rest_api_id   = aws_api_gateway_rest_api.example.id
+  resource_id   = aws_api_gateway_resource.http.id
+  http_method   = "GET"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "http" {
+  rest_api_id = aws_api_gateway_rest_api.example.id
+  resource_id = aws_api_gateway_method.http.resource_id
+  http_method = aws_api_gateway_method.http.http_method
+
+  integration_http_method = "POST"
+  type                    = "HTTP_PROXY"
+  uri                     = "http://www.mocky.io/v2/5e2040353000004e8ad1edb9"
+}
+
+resource "aws_api_gateway_deployment" "http" {
+  depends_on = [
+    aws_api_gateway_integration.http
+  ]
+
+  rest_api_id = aws_api_gateway_rest_api.example.id
+  stage_name  = "test"
+}
+#------------------------------------------------------------------------------------------
