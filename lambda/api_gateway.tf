@@ -11,6 +11,8 @@ resource "aws_api_gateway_resource" "first" {
   path_part   = "first"
 }
 
+# Not recommended for parent resource
+/*
 resource "aws_api_gateway_method" "first_get" {
   rest_api_id   = aws_api_gateway_rest_api.example.id
   resource_id   = aws_api_gateway_resource.first.id
@@ -39,7 +41,7 @@ resource "aws_api_gateway_deployment" "first_deployment" {
 
 output "first_deployment" {
   value = aws_api_gateway_deployment.first_deployment.invoke_url
-}
+}*/
 #------------------------------------------------------------------------------------------
 
 
