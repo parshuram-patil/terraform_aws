@@ -27,15 +27,8 @@ resource "aws_api_gateway_integration" "first" {
   type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.first_lambda.invoke_arn
 }
-#------------------------------------------------------------------------------------------
 
-
-#------------------------------- Second lambda --------------------------------------------
-
-#------------------------------------------------------------------------------------------
-
-
-resource "aws_api_gateway_deployment" "example" {
+resource "aws_api_gateway_deployment" "first_deployment" {
   depends_on = [
     aws_api_gateway_integration.first
   ]
@@ -45,5 +38,11 @@ resource "aws_api_gateway_deployment" "example" {
 }
 
 output "base_url" {
-  value = aws_api_gateway_deployment.example.invoke_url
+  value = aws_api_gateway_deployment.first_deployment.invoke_url
 }
+#------------------------------------------------------------------------------------------
+
+
+#------------------------------- Second lambda --------------------------------------------
+
+#------------------------------------------------------------------------------------------
