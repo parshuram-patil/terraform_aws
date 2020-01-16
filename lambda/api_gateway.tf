@@ -12,6 +12,8 @@ resource "aws_api_gateway_deployment" "example" {
   stage_name  = "test"
 }
 
+#------------------------------- First lambda --------------------------------------------
+
 resource "aws_api_gateway_resource" "first" {
   rest_api_id = aws_api_gateway_rest_api.example.id
   parent_id   = aws_api_gateway_rest_api.example.root_resource_id
@@ -34,6 +36,7 @@ resource "aws_api_gateway_integration" "first" {
   type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.first_lambda.invoke_arn
 }
+#------------------------------------------------------------------------------------------
 
 output "base_url" {
   value = aws_api_gateway_deployment.example.invoke_url
