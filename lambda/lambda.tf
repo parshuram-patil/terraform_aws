@@ -1,15 +1,16 @@
 locals {
-  lambda_zip_location = "output/welcome.zip"
+  first_zip_location = "output/first.zip"
 }
 
+#------------------------------- First lambda --------------------------------------------
 data "archive_file" "first_archive" {
   type        = "zip"
   source_file = "code/first.py"
-  output_path = local.lambda_zip_location
+  output_path = local.first_zip_location
 }
 
 resource "aws_lambda_function" "first_lambda" {
-  filename      = local.lambda_zip_location
+  filename      = local.first_zip_location
   function_name = "first_lambda"
   role          = aws_iam_role.psp_lambda_role.arn
   handler       = "first.hello"
@@ -27,3 +28,9 @@ resource "aws_lambda_permission" "first_lambda" {
   principal     = "apigateway.amazonaws.com"
   source_arn = "${aws_api_gateway_rest_api.example.execution_arn}/*/*"
 }
+#------------------------------------------------------------------------------------------
+
+
+#------------------------------- Second lambda --------------------------------------------
+
+#------------------------------------------------------------------------------------------
