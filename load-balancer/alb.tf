@@ -29,27 +29,33 @@ resource "aws_alb_listener" "alb_listener" {
 }
 
 resource "aws_alb_listener_rule" "listener_rule_1" {
-  priority = 1
+  priority     = 1
   depends_on   = [aws_alb_target_group.alb_target_group]
   listener_arn = aws_alb_listener.alb_listener.arn
   action {
     type             = "forward"
     target_group_arn = aws_alb_target_group.alb_target_group.id
   }
+
   condition {
-    field  = "path-pattern"
-    values = ["*test/home.html"]
+    path_pattern {
+      values = ["*test/home.html"]
+    }
   }
 }
 
 resource "aws_alb_listener_rule" "listener_rule_2" {
-  priority = 2
+  priority     = 2
   depends_on   = [aws_alb_target_group.alb_target_group]
   listener_arn = aws_alb_listener.alb_listener.arn
+
   condition {
-    field  = "path-pattern"
-    values = ["*test/google"]
+    path_pattern {
+      values = [
+      "*test/google"]
+    }
   }
+
   action {
     type = "redirect"
 
@@ -65,8 +71,8 @@ resource "aws_alb_listener_rule" "listener_rule_2" {
       port        = "443"
       protocol    = "HTTPS"
       status_code = "HTTP_301"
-      host = "www.google.com"
-      path = "/"
+      host        = "www.google.com"
+      path        = "/"
     }
   }
 }
