@@ -15,7 +15,6 @@ resource "aws_alb" "alb" {
     prefix = "ELB-logs"
   }
 
-
 }
 
 resource "aws_alb_listener" "alb_listener" {
@@ -29,7 +28,8 @@ resource "aws_alb_listener" "alb_listener" {
   }
 }
 
-resource "aws_alb_listener_rule" "listener_rule" {
+resource "aws_alb_listener_rule" "listener_rule_1" {
+  priority = 1
   depends_on   = [aws_alb_target_group.alb_target_group]
   listener_arn = aws_alb_listener.alb_listener.arn
   action {
@@ -38,7 +38,36 @@ resource "aws_alb_listener_rule" "listener_rule" {
   }
   condition {
     field  = "path-pattern"
-    values = ["/test"]
+    values = ["*test/home.html"]
+  }
+}
+
+resource "aws_alb_listener_rule" "listener_rule_2" {
+  priority = 2
+  depends_on   = [aws_alb_target_group.alb_target_group]
+  listener_arn = aws_alb_listener.alb_listener.arn
+  condition {
+    field  = "path-pattern"
+    values = ["*test/google"]
+  }
+  action {
+    type = "redirect"
+
+    /*redirect {
+      port        = "80"
+      protocol    = "HTTP"
+      status_code = "HTTP_301"
+      host = "34.254.231.219"
+      path = "/test/home.html"
+    }*/
+
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+      host = "www.google.com"
+      path = "/"
+    }
   }
 }
 
