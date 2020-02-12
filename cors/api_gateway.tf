@@ -55,7 +55,7 @@ resource "aws_api_gateway_integration_response" "options_integration_response" {
 resource "aws_api_gateway_method" "cors_method" {
   rest_api_id   = aws_api_gateway_rest_api.cors_api.id
   resource_id   = aws_api_gateway_resource.cors_resource.id
-  http_method   = "GET"
+  http_method   = "ANY"
   authorization = "NONE"
 }
 resource "aws_api_gateway_method_response" "cors_method_response_200" {
