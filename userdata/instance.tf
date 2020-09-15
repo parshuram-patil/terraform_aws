@@ -60,7 +60,7 @@ output "public_ip" {
 }
 
 resource "aws_instance" "win_server" {
-  ami           = "ami-0fd746a1b57abfb81"
+  ami           = "ami-07c8a3a59f2f7305b"
   instance_type = "t2.micro"
 
   # the VPC subnet
