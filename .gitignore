@@ -17,3 +17,6 @@
 
 # shell files
 *.tf*~
+
+# keys
+mykey
