@@ -18,12 +18,13 @@ pvcreate /dev/xvdi1
 pvs
 vgcreate vg_01 /dev/xvdi1
 vgs
-lvcreate -L 9G -n lv_01 vg_01
+lvcreate -n lv_01 -l 100%FREE vg_01
 lvs
 lvdisplay
 mkfs.ext4 /dev/vg_01/lv_01
 mkdir -p /data
-mount /dev/vg_01/lv_01 /data
+echo "/dev/vg_01/lv_01 /data ext4 defaults 0 0" >> /etc/fstab
+mount /data
 df -h
 ---------------------
 fdisk /dev/xvdh
@@ -41,7 +42,8 @@ pvcreate /dev/xvdh1
 vgs
 vgextend vg_01 /dev/xvdh1
 vgs (you will see increase size by new disk )
-lvcreate -L 9G -n lv_02 vg_01
+lvcreate -L 100%FREE -n lv_02 vg_01
 mkfs.ext4 /dev/vg_01/lv_02
 mkdir /data2
-mount /dev/vg_01/lv_02 /data2/
+echo "/dev/vg_01/lv_01 /data2 ext4 defaults 0 0" >> /etc/fstab
+mount /data2
