@@ -1,6 +1,6 @@
 
-resource "aws_batch_compute_environment" "psp_batch_compute_environment" {
-  compute_environment_name = "psp-tf-batch-compute-environment"
+resource "aws_batch_compute_environment" "psp_batch_spot_compute_environment" {
+  compute_environment_name = "psp-tf-spot-batch-compute-environment"
   compute_resources {
     instance_role       = aws_iam_instance_profile.psp_instance_profile.arn
     instance_type       = ["optimal"]
@@ -20,11 +20,11 @@ resource "aws_batch_compute_environment" "psp_batch_compute_environment" {
 }
 
 
-resource "aws_batch_job_queue" "psp_batch_queue" {
-  name                 = "psp-tf-batch-queue"
+resource "aws_batch_job_queue" "psp_spot_batch_queue" {
+  name                 = "psp-tf-spot-batch-queue"
   state                = "ENABLED"
   priority             = 10
-  compute_environments = [aws_batch_compute_environment.psp_batch_compute_environment.arn]
+  compute_environments = [aws_batch_compute_environment.psp_batch_spot_compute_environment.arn]
 }
 
 resource "aws_batch_job_definition" "psp_job_definition" {
