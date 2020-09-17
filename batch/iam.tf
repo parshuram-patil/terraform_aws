@@ -119,3 +119,47 @@ data "aws_iam_policy_document" "ecr_policy_doc" {
     resources = ["*"]
   }
 }
+
+
+resource "aws_iam_role" "psp_batch_job_schedular_role" {
+  name = "psp-batch-job-schedular-role"
+  assume_role_policy = <<DOC
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "events.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+DOC
+}
+
+data "aws_iam_policy_document" "psp_submit_batch_job_policy_doc" {
+  version = "2012-10-17"
+  statement {
+    effect = "Allow"
+    actions = [
+      "batch:SubmitJob"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "psp_submit_batch_job_policy" {
+  name        = "psp-submit-batch-job-policy"
+  path        = "/"
+  description = "Policy to sumbit batch job"
+  policy      = data.aws_iam_policy_document.psp_submit_batch_job_policy_doc.json
+}
+
+resource "aws_iam_role_policy_attachment" "psp_batch_job_submit_policy_attachment" {
+  role       = aws_iam_role.psp_batch_job_schedular_role.name
+  policy_arn = aws_iam_policy.psp_submit_batch_job_policy.arn
+}
+
