@@ -77,17 +77,14 @@ resource "aws_batch_job_queue" "psp_on_demand_batch_queue" {
 
 
 resource "aws_batch_job_definition" "psp_on_demand_batch_job_definition" {
-  name = "psp-tf-job-definition"
+  name = "psp-tf-on-demand-job-definition"
   type = "container"
-  retry_strategy {
-    attempts = 1
-  }
   container_properties = <<EOF
 {
 "image":"${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${aws_ecr_repository.psp_ecr_repo.name}:latest",
 "jobRoleArn":"${aws_iam_role.psp_job_defination_role.arn}",
 "vcpus":1,
-"memory": 512,
+"memory": 1024,
 "command": [],
 "volumes": [],
 "environment": [],
