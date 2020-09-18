@@ -121,24 +121,24 @@ data "aws_iam_policy_document" "ecr_policy_doc" {
 }
 
 
-resource "aws_iam_role" "psp_batch_job_schedular_role" {
-  name = "psp-batch-job-schedular-role"
-  assume_role_policy = <<DOC
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "events.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-DOC
-}
+//resource "aws_iam_role" "psp_batch_job_schedular_role" {
+//  name = "psp-batch-job-schedular-role"
+//  assume_role_policy = <<DOC
+//{
+//  "Version": "2012-10-17",
+//  "Statement": [
+//    {
+//      "Sid": "",
+//      "Effect": "Allow",
+//      "Principal": {
+//        "Service": "events.amazonaws.com"
+//      },
+//      "Action": "sts:AssumeRole"
+//    }
+//  ]
+//}
+//DOC
+//}
 
 data "aws_iam_policy_document" "psp_submit_batch_job_policy_doc" {
   version = "2012-10-17"
@@ -158,10 +158,10 @@ resource "aws_iam_policy" "psp_submit_batch_job_policy" {
   policy      = data.aws_iam_policy_document.psp_submit_batch_job_policy_doc.json
 }
 
-resource "aws_iam_role_policy_attachment" "psp_batch_job_submit_policy_attachment" {
-  role       = aws_iam_role.psp_batch_job_schedular_role.name
-  policy_arn = aws_iam_policy.psp_submit_batch_job_policy.arn
-}
+//resource "aws_iam_role_policy_attachment" "psp_batch_job_submit_policy_attachment" {
+//  role       = aws_iam_role.psp_batch_job_schedular_role.name
+//  policy_arn = aws_iam_policy.psp_submit_batch_job_policy.arn
+//}
 
 resource "aws_iam_role" "psp_trigger_batch_job_lambda_role" {
   name = "psp-trigger-batch-job-lambda-role"
