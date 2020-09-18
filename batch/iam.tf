@@ -163,3 +163,32 @@ resource "aws_iam_role_policy_attachment" "psp_batch_job_submit_policy_attachmen
   policy_arn = aws_iam_policy.psp_submit_batch_job_policy.arn
 }
 
+resource "aws_iam_role" "psp_trigger_batch_job_lambda_role" {
+  name = "psp-trigger-batch-job-lambda-role"
+  assume_role_policy = <<DOC
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "lambda.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+DOC
+}
+
+resource "aws_iam_role_policy_attachment" "psp_trigger_batch_job_lambda_ber_policy_attachment" {
+  role       = aws_iam_role.psp_trigger_batch_job_lambda_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+resource "aws_iam_role_policy_attachment" "psp_trigger_batch_job_lambda_submit_job_policy_attachment" {
+  role       = aws_iam_role.psp_trigger_batch_job_lambda_role.name
+  policy_arn = aws_iam_policy.psp_submit_batch_job_policy.arn
+}
+
